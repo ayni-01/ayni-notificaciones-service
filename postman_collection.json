@@ -1,0 +1,191 @@
+{
+  "info": {
+    "name": "Somos Ayni — notificaciones-service",
+    "description": "Endpoints del notificaciones-service (puerto 8086). Requiere JWT de identidad-service (puerto 8081).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_IDENTIDAD",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "BASE_PERFILES",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "BASE_RETOS",
+      "value": "http://localhost:8083"
+    },
+    {
+      "key": "BASE_POSTULACIONES",
+      "value": "http://localhost:8084"
+    },
+    {
+      "key": "BASE_HABILIDADES",
+      "value": "http://localhost:8085"
+    },
+    {
+      "key": "BASE_NOTIFICACIONES",
+      "value": "http://localhost:8086"
+    },
+    {
+      "key": "BASE_METRICAS",
+      "value": "http://localhost:8087"
+    },
+    {
+      "key": "TOKEN_EMPRESA",
+      "value": ""
+    },
+    {
+      "key": "TOKEN_TALENTO",
+      "value": ""
+    },
+    {
+      "key": "ID_EMPRESA",
+      "value": ""
+    },
+    {
+      "key": "ID_TALENTO",
+      "value": ""
+    },
+    {
+      "key": "RETO_ID",
+      "value": ""
+    },
+    {
+      "key": "POSTULACION_ID",
+      "value": ""
+    },
+    {
+      "key": "NOTIFICACION_ID",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Enviar Notificación",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{TOKEN_EMPRESA}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_NOTIFICACIONES}}/api/v1/notificaciones",
+          "host": [
+            "{{BASE_NOTIFICACIONES}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "notificaciones"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"destinatarioId\":\"{{ID_TALENTO}}\",\"tipo\":\"APROBADO\",\"mensaje\":\"¡Tu postulación fue aprobada!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Ver Mis Notificaciones",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{TOKEN_TALENTO}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_NOTIFICACIONES}}/api/v1/notificaciones",
+          "host": [
+            "{{BASE_NOTIFICACIONES}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "notificaciones"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Ver No Leídas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{TOKEN_TALENTO}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_NOTIFICACIONES}}/api/v1/notificaciones?leida=false",
+          "host": [
+            "{{BASE_NOTIFICACIONES}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "notificaciones?leida=false"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Marcar como Leída",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{TOKEN_TALENTO}}"
+          }
+        ],
+        "url": {
+          "raw": "{{BASE_NOTIFICACIONES}}/api/v1/notificaciones/{{NOTIFICACION_ID}}/leida",
+          "host": [
+            "{{BASE_NOTIFICACIONES}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "notificaciones",
+            "{{NOTIFICACION_ID}}",
+            "leida"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_NOTIFICACIONES}}/actuator/health",
+          "host": [
+            "{{BASE_NOTIFICACIONES}}"
+          ],
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      }
+    }
+  ]
+}
