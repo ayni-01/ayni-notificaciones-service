@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ayni-notificaciones-db
+    environment:
+      POSTGRES_DB: somosayni
+      POSTGRES_USER: somosayni
+      POSTGRES_PASSWORD: somosayni123
+    ports:
+      - "5437:5432"
+    volumes:
+      - notificaciones_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U somosayni"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  notificaciones-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ayni-notificaciones-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USERNAME: somosayni
+      DB_PASSWORD: somosayni123
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8086:8086"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  notificaciones_data:
